@@ -1,0 +1,76 @@
+{% if current_user.is_admin >= 2 %}
+    {% extends 'base.html' %}
+    {% from 'bootstrap/form.html' import render_form %}
+
+    {% block head %}
+    	<title>修改电影</title>
+    {% endblock %}
+
+
+    {% block content %}
+    	<div class="page-header">
+            <h1>电影<small class="text-muted"> {{ pagination.total }} 部</small></h1>
+            <ul class="nav nav-pills">
+                <li class="nav-item">
+                    <a class="nav-link {% if request.args.get('filter', '全部') == '全部' %}active{% endif %}" href="{{ url_for('admin.update_movie', filter='全部') }}">全部</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link {% if request.args.get('filter') == '热度' %}active{% endif %}" href="{{ url_for('admin.update_movie', filter='热度') }}">热度</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link {% if request.args.get('filter') == '时间' %}active{% endif %}" href="{{ url_for('admin.update_movie', filter='时间') }}">时间</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link {% if request.args.get('filter') == '评价' %}active{% endif %}" href="{{ url_for('admin.update_movie', filter='评价') }}">评价</a>
+                </li>
+            </ul>
+            {% if movies %}
+    	        <table class="table table-striped">
+    	            <thead>
+    	               <tr>
+                            <th>序号</th>
+        	                <th>电影名称</th>
+        	                <th>评分</th>
+        	                <th>评价人数</th>
+        	                <th>出版年份</th>
+        	                <th>国家</th>
+        	                <th>图片ID</th>
+        	                <th>电影地址</th>
+                            <th>分类</th>
+    	               </tr>
+    	            </thead>
+                    {% for movie in movies %}
+        	            <tr>
+        	            	<td>{{ loop.index + ((pagination.page - 1) * 10) }}</td>
+        	            	<td>{{ movie.title|chinese }}</td>
+        	            	<td>{{ movie.rate }}</td>
+        	            	<td>{{ movie.people }}</td>
+        	            	<td>{{ movie.year }}</td>
+        	            	<td>{{ movie.country }}</td>
+        	            	<td>{{ movie.img }}</td>
+        	            	<td>{{ movie.url }}</td>
+                            <td>{{ movie.category }}</td>
+        	            	<td><a class="btn btn-info btn-sm" href="{{ url_for('admin.update', movie_id=movie.id) }}">修改</a>
+                                <form class="inline" method="post"
+                                      action="{{ url_for('admin.delete', movie_id=movie.id, next=request.full_path) }}">
+                                    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
+                                    <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('确认删除?');">删除
+                                    </button>
+                                </form>
+                            </td>
+        	            </tr>
+                    {% endfor %}
+                </table>
+            {% endif %}
+        </div>
+        {% if movies %}
+        <div class="offset-md-4">
+            <br>
+            {{ render_pagination(pagination) }}
+            <br><br>
+        </div>
+        {% endif %}
+    {% endblock %}
+
+    {% block footer %}{% endblock %}
+{% endif %}

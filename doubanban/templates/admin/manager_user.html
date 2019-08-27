@@ -1,0 +1,53 @@
+{% if current_user.is_admin == 3 %}
+    {% extends 'base.html' %}
+    {% from 'bootstrap/form.html' import render_form %}
+
+    {% block head %}
+    	<title>升级管理</title>
+    {% endblock %}
+
+
+    {% block content %}
+    	<div class="page-header">
+            <ul class="nav nav-pills">
+                <li class="nav-item">
+                    <a class="nav-link {% if request.args.get('grade', '2') == '2' %}active{% endif %}" href="{{ url_for('admin.manager_user', grade='2') }}">普通管理员</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link {% if request.args.get('grade') == '1' %}active{% endif %}" href="{{ url_for('admin.manager_user', grade='1') }}">普通会员</a>
+                </li>
+            </ul>
+            {% if targets %}
+    	        <table class="table table-striped">
+    	            <thead>
+    	               <tr>
+                            <th>序号</th>
+        	                <th>帐号名称</th>
+        	                <th>帐号邮箱</th>
+                            <th>帐号级别</th>
+    	               </tr>
+    	            </thead>
+                    {% for target in targets %}
+        	            <tr>
+        	            	<td>{{ loop.index + ((pagination.page - 1) * 10) }}</td>
+        	            	<td>{{ target.username }}</td>
+        	            	<td>{{ target.email }}</td>
+        	            	<td>{{ target.is_admin }}</td>
+        	            	<td><a class="btn btn-info btn-sm" href="{{ url_for('admin.upgrade', user_id=target.pk) }}">修改级别</a>
+                            </td>
+        	            </tr>
+                    {% endfor %}
+                </table>
+            {% endif %}
+        </div>
+        {% if targets %}
+        <div class="offset-md-4">
+            <br>
+            {{ render_pagination(pagination) }}
+            <br><br>
+        </div>
+        {% endif %}
+    {% endblock %}
+
+    {% block footer %}{% endblock %}
+{% endif %}

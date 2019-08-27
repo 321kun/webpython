@@ -1,0 +1,132 @@
+{% from 'bootstrap/nav.html' import render_nav_item %}
+{% from 'bootstrap/pagination.html' import render_pagination %}
+{% from 'macro.html' import render_collect %}
+
+<!DOCTYPE html>
+<html lang="zh-cmn-Hans">
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+	<link rel="icon" href="{{ url_for('static', filename='favicon.ico') }}">
+	{{ bootstrap.load_css() }}
+	{% block head %}
+	<title>豆半半电影查询示例</title>
+	{% endblock %}
+	<style>
+        body { padding-top: 100px; }
+    </style>
+</head>
+<body>
+<main class="container">
+    <nav class="navbar fixed-top navbar-expand-lg navbar-light bg-light">
+        <a class="navbar-brand" href="{{ url_for('base') }}">
+        <img src="{{ url_for('static', filename='favicon.ico') }}" alt="doubanban" style="height:36px; width:36px">
+        </a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav mr-auto">
+                <div title="欢迎来到坤的简易电影查询网页">{{ render_nav_item('base', '首页', use_li=True) }}</div>
+                <div title="以近期观看人数为基准查找电影">{{ render_nav_item('movie.recommed', '按热度排序', use_li=True) }}</div>
+                <div title="以电影上映时间为基准查找电影">{{ render_nav_item('movie.time', '按时间排序', use_li=True) }}</div>
+                <div title="以电影评价分数为基准查找电影">{{ render_nav_item('movie.rank', '按评价排序', use_li=True) }}</div>
+            </ul>
+            <div>
+            {% if current_user.is_authenticated %}
+                <div class="dropdown nav-item">
+                    <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"><span class="caret"></span>{{ current_user.username }}
+                    </a>
+                    <div class="dropdown-menu dropdown-menu-right" role="menu">
+                        <a class="dropdown-item" href="{{ url_for('user.index', username=current_user.username) }}"><span class="oi oi-person"></span> 我的主页</a>
+                        {% if current_user.is_admin >= 2 %}
+                            <a class="dropdown-item" href="{{ url_for('admin.index', username=current_user.username) }}">
+                                <span class="oi oi-dashboard"></span>管理后台</a>
+                        {% endif %}
+                        <a class="dropdown-item" href="{{ url_for('user.logout') }}">
+                            <span class="oi oi-power-standby"></span> 退出
+                        </a>
+                    </div>
+                </div>
+            {% else %}
+                <a class="btn btn-outline-primary" href="{{ url_for('user.login') }}">登录</a>&nbsp;&nbsp;
+                <a class="btn btn-primary" href="{{ url_for('user.register') }}">注册</a>
+            {% endif %}&nbsp;&nbsp;
+            </div>
+        </div>
+    </nav>
+    {% for message in get_flashed_messages(with_categories=True) %}
+        <div class="alert alert-{{ message[0] }} text-center">
+            <button type="button" class="close" data-dismiss="alert">&times;</button>
+            {{ message[1] }}
+        </div>
+    {% endfor %}
+    
+	{% block content %}
+	<div class="text-center">
+		<h1>欢迎来到豆半半电影查询网页</h1>
+		<br>
+    </div>
+    <div>
+        <form class="form-inline my-2 my-md-0 offset-md-5" action="{{ url_for('feature.search') }}">
+            <input type="text" name="q" class="form-control" placeholder="电影名称">
+                <button class="btn btn-light my-2 my-sm-0" type="submit">
+                <span class="oi oi-magnifying-glass">搜索</span>
+                </button>
+        </form>
+        <br><br>
+    </div>
+    {% if movies %}
+        <div>
+            <h1>电影<small class="text-muted"> {{ pagination.total }} </small>部</h1>
+        </div><br>
+    {% endif %}
+    <div class="row">
+    {% for movie in movies %}
+        <div class="col-xs-6 col-md-3" align="center" category="以{{ movie.category }}分类">
+            <a href="{{ movie.url }}" target="_blank">
+                <span style="cursor:pointer">
+                    <img src="/static/{{ movie.img }}" class="rounded" alt="{{ movie.title|chinese }}" title="点击看更多信息" style="height:367px; width:270px">
+                </span>
+                <br>{{ movie.title|chinese }}
+                <br>电影评分：{{ movie.rate }}
+                <br>已有 {{ movie.people }} 人评价
+                <br>{{ movie.country }}
+                <br>{{ movie.year }}<br>
+            </a>
+            {% if current_user.is_authenticated %}
+                {% if not movie in current_user.collections %}
+                    {{ render_collect('feature.collect', movie, '收藏') }}
+                {% else %}
+                    {{ render_collect('feature.uncollect', movie, '取消收藏') }}
+                {% endif %}
+            {% else %}
+                {{ render_collect('feature.collect', movie, '收藏') }}>
+            {% endif %}
+        <br><br>
+        </div>
+    {% endfor %}
+    </div>
+    {% if movies %}
+        <div class="offset-md-4">
+            <br><br>
+            {{ render_pagination(pagination) }}
+        </div>
+    {% endif %}
+	{% endblock %}
+
+	<footer class="text-center">
+        {% block footer %}
+        <br><br><br>
+        <small> &copy; 2019 <a href="#" title="Written by kunkun">Kunkun</a></small>
+        <br>
+        <small> &copy; Email: <a href="#" title="find me">kunydqsn@163.com</a></small><br>
+        <small> &copy; Thanks to <a href="http://helloflask.com/" title="find him" target="_blank">Grey Li</a></small><br>
+        <small> &copy; 更多电影请到 <a href="https://movie.douban.com/" target="_blank">豆瓣电影</a></small>
+        {% endblock %}
+    </footer>
+</main>
+{{ bootstrap.load_js() }}
+</body>
+</html>
+

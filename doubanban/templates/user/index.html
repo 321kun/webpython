@@ -1,0 +1,43 @@
+{% extends 'base.html' %}
+
+{% block head %}
+<title>个人主页</title>
+{% endblock %}
+
+
+{% block content %}
+<h1>{{ current_user.username }} 的电影小窝</h1><br><br>
+<a class="btn btn-primary" href="{{ url_for('user.change_password', username=current_user.username) }}">修改密码</a>
+<a class="btn btn-primary" href="{{ url_for('user.change_email_request', username=current_user.username) }}">修改邮箱</a>
+{% if not current_user.confirmed %}
+    <a class="btn btn-primary" href="{{ url_for('user.resend_confirm_email') }}">邮箱认证</a>
+{% endif %}
+<br><br><br>
+<div class="container">
+    <h4>&gtlPar; 我的收藏 &gtlPar;</h4>
+    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(总共收藏 {{ current_user.collection_num()[0] }} 部电影，重复收藏 {{ current_user.collection_num()[1] }} 部)
+    <br>=================================
+    <br><br>
+    <div class="row">
+        {% for collection in current_user.no_repeat() %}
+            <div class="col-xs-6 col-md-3" align="center">
+                <a href="{{ collection[2] }}" target="_blank">
+                    <span style="cursor:pointer">
+                        <img src="/static/{{ collection[1] }}" class="rounded" alt="{{ collection[0]|chinese }}" title="点击看更多信息" style="height:367px; width:270px">
+                    </span>
+                    {{ collection[0]|chinese }}<br>
+                </a>
+            <form class="inline float-right" method="post" action="{{ url_for('feature.uncollect', movie_id=collection[3]) }}">
+                <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                <button type="submit" class="btn btn-outline-secondary btn-sm">
+                    <span class="oi oi-x"></span> 取消收藏
+                </button>
+            </form><br><br>
+            </div>
+        {% endfor %}
+    </div>
+</div>
+<br><br><br><br><br><br>
+{% endblock %}
+
+{% block footer %}{% endblock %}

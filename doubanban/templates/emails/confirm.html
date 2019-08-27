@@ -1,0 +1,6 @@
+<p>您好 {{ user.username }},</p>
+<p>欢迎来到 doubanban!</p>
+<p>请访问一下网页来确认您的邮箱地址:<br>
+    <a href="{{ url_for('user.confirm', token=token, _external=True) }}">{{ url_for('user.confirm', token=token, _external=True) }}</a>
+</p>
+<small>（请勿回复此通知，此收件箱不受监控）</small>

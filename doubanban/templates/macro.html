@@ -1,0 +1,8 @@
+{% macro render_collect(endpoint, obj, word) %}
+	<form class="inline float-right" method="post" action="{{ url_for(endpoint, movie_id=obj.id) }}">
+		<input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+		<button type="submit" class="btn btn-outline-secondary btn-sm">
+			<span class="oi oi-star"></span> {{ word }}
+		</button>
+	</form>
+{% endmacro %}

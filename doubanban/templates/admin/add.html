@@ -1,0 +1,21 @@
+{% if current_user.is_admin >= 2 %}
+	{% extends 'base.html' %}
+	{% from 'bootstrap/form.html' import render_form %}
+
+	{% block head %}
+		<title>增加电影</title>
+	{% endblock %}
+
+
+	{% block content %}
+		<div class="text-center">
+			<h3>豆半半电影管理后台</h3>
+			<small>此功能于该网站来说相当无用且复杂，做出来练习练习</small>
+		</div>
+		<div class="hello-form">
+			{{ render_form(form, action=request.full_path) }}
+		</div>
+	{% endblock %}
+
+	{% block footer %}{% endblock %}
+{% endif %}

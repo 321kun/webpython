@@ -1,0 +1,21 @@
+{% if current_user.is_admin >= 2 %}
+	{% extends 'base.html' %}
+	{% from 'bootstrap/nav.html' import render_nav_item %}
+	{% from 'bootstrap/pagination.html' import render_pagination %}
+
+	{% block content %}
+	<div class="text-center">
+		<h3>豆半半电影管理后台</h3><br>
+		<h4>管理员  {{ current_user.username}}</h4><br>
+		<div><a class="btn btn-primary" href="{{ url_for('admin.add') }}">新增电影</a></div><br>
+		<div><a class="btn btn-primary" href="{{ url_for('admin.update_movie') }}">修改电影</a></div><br>
+		{% if current_user.is_admin == 3 %}
+			<div><a class="btn btn-primary" href="{{ url_for('admin.manager_user') }}">升级管理</a></div><br>
+			<div><a class="btn btn-primary" href="#">其他暂无</a></div><br>
+		{% endif %}
+	<div><a class="btn btn-primary" href="{{ url_for('user.logout') }}">退出系统</a></div><br>
+	</div>
+	{% endblock%}
+
+	{% block footer %}{% endblock %}
+{% endif %}
