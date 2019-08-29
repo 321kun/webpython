@@ -5,7 +5,6 @@ from flask_mail import Mail
 from flask_wtf import CSRFProtect
 from flask_caching import Cache
 from flask_debugtoolbar import DebugToolbarExtension
-from flask_sslify import SSLify
 
 
 bootstrap = Bootstrap()
@@ -15,7 +14,6 @@ mail = Mail()
 csrf = CSRFProtect()
 cache = Cache()
 toolbar = DebugToolbarExtension()
-# sslify = SSLify()
 
 
 @login_manager.user_loader

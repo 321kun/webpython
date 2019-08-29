@@ -76,10 +76,22 @@
         </form>
         <br><br>
     </div>
-    {% if movies %}
-        <div>
-            <h1>电影<small class="text-muted"> {{ pagination.total }} </small>部</h1>
-        </div><br>
+    {% if not movies %}
+        <div class="text-center">
+            <h4>～亲，来部电影撒！～</h4>
+        </div>
+        <div class="text-center">
+            <span style="cursor:pointer">
+                <img src="{{ url_for('static', filename='123.gif') }}" style="height:240px; width:240px; border-radius:50%">
+            </span>
+        </div><br><br>
+        <div class="text-center">
+            <h5>&raquo; 网站作者：321坤</h5>
+            <h5>&raquo; 2019-8-29</h5>
+            <h5>&raquo; 自学flask两个月～初作品</h5>
+            <h5>&raquo; 网站2020年8月25失效</h5>
+            <h5>&raquo; 豆半半一词纯属灵感，如有侵权，立刻删除</h5>
+        </div>
     {% endif %}
     <div class="row">
     {% for movie in movies %}

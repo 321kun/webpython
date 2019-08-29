@@ -122,4 +122,4 @@ def upgrade(user_id):
         flash('修改管理成功', 'success')
         return redirect(url_for('admin.manager_user'))
     form.is_admin.data = user.is_admin
-    return render_template('admin/update.html', form=form)
+    return render_template('admin/upgrade.html', form=form)

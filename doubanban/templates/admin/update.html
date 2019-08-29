@@ -3,13 +3,13 @@
 	{% from 'bootstrap/form.html' import render_form %}
 
 	{% block head %}
-		<title>升级管理</title>
+		<title>电影修改</title>
 	{% endblock %}
 
 
 	{% block content %}
 		<div class="text-center">
-			<h3>升级或降级管理员</h3>
+			<h3>修改电影</h3>
 		</div>
 		<div class="hello-form">
 			{{ render_form(form, action=request.full_path) }}

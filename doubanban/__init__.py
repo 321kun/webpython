@@ -6,11 +6,12 @@ from doubanban.blueprints.movie import movie_bp
 from doubanban.blueprints.user import user_bp
 from doubanban.blueprints.feature import feature_bp
 
-from doubanban.extensions import db, bootstrap, login_manager, mail, csrf, cache, toolbar  # sslify
+from doubanban.extensions import db, bootstrap, login_manager, mail, csrf, cache, toolbar
 from doubanban.settings import config
 
 import logging
 from logging.handlers import SMTPHandler, RotatingFileHandler
+from flask_sslify import SSLify
 
 basedir = os.path.abspath(os.path.dirname(os.path.dirname(__file__)))
 
@@ -41,7 +42,8 @@ def register_extensions(app):
     csrf.init_app(app)
     cache.init_app(app)
     toolbar.init_app(app)
-    # sslify.init_app(app)
+    # 测试记得注释下面这行，否则测试全fail～
+    sslify = SSLify(app)
 
 
 def register_blueprints(app):
