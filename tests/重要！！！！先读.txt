@@ -1,0 +1,3 @@
+测试前请先把 /doubanban/__init__.py  文件
+的 sslify = SSLify(app)  注释掉，否则测试
+全fail！！！！！

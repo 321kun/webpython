@@ -1,0 +1,23 @@
+[[source]]
+name = "pypi"
+url = "https://pypi.tuna.tsinghua.edu.cn/simple/"
+verify_ssl = true
+
+[dev-packages]
+coverage = "*"
+flake8 = "*"
+
+[packages]
+flask = "*"
+flask-mongoengine = "*"
+watchdog = "*"
+flask-wtf = "*"
+bootstrap-flask = "*"
+flask-debugtoolbar = "*"
+python-dotenv = "*"
+flask-login = "*"
+flask-mail = "*"
+flask-caching = "*"
+flask-sslify = "*"
+
+
