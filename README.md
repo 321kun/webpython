@@ -2,7 +2,7 @@
 
 *welcome to doubanban*
 
-Demo: https://www.mydoubanban.top/
+Demo: 106.53.94.148  （本来有域名，且配了证书，但要进行网站备案，我选择放弃。。）
 
 
 ######## important ########
