@@ -42,7 +42,7 @@ def register_extensions(app):
     csrf.init_app(app)
     cache.init_app(app)
     toolbar.init_app(app)
-    # 测试记得注释下面这行，否则测试全fail～如今没法用证书，姑且直接注释
+    # 测试记得注释下面这行，否则测试全fail～如今直接注释
     # sslify = SSLify(app)
 
 
